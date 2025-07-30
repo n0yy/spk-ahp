@@ -31,7 +31,6 @@ foreach ($hasil_alternatif_raw as $row) {
     $hasil_alternatif[$row['id_kriteria']][$row['id_alternatif']] = $row['bobot'];
 }
 
-// Calculate final scores
 $final_scores = [];
 if ($hasil_kriteria && $hasil_alternatif) {
     $bobot_kriteria = json_decode($hasil_kriteria['bobot_kriteria'], true);

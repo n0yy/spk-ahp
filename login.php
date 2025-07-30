@@ -2,8 +2,10 @@
 session_start();
 require_once 'config/database.php';
 
+$error = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
 
     $stmt = $pdo->prepare("SELECT * FROM pengguna WHERE username = ?");
@@ -17,54 +19,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: dashboard.php");
         exit();
     } else {
-        $error = "Username atau password salah!";
+        $error = "Username atau password salah.";
     }
 }
-
-include 'includes/header.php';
 ?>
 
-<div class="row align-items-center justify-content-center" style="min-height: 80vh;">
-    <!-- Kolom Overview Proyek -->
-    <div class="col-md-6 login-overview">
-        <h1>Selamat Datang di SPK AHP</h1>
-        <p class="lead">Sistem Pendukung Keputusan untuk Prioritas Peningkatan Layanan Rumah Sakit.</p>
-        <hr style="border-color: var(--senja-primary);">
-        <p>Aplikasi ini menggunakan metode <strong>Analytic Hierarchy Process (AHP)</strong> untuk membantu manajemen dalam mengambil keputusan strategis. Dengan sistem ini, Anda dapat:</p>
-        <ul>
-            <li>Mendefinisikan kriteria evaluasi layanan.</li>
-            <li>Menentukan alternatif-alternatif perbaikan.</li>
-            <li>Melakukan penilaian perbandingan berpasangan untuk mendapatkan bobot prioritas.</li>
-            <li>Melihat hasil akhir berupa peringkat alternatif yang paling direkomendasikan.</li>
-        </ul>
-        <p>Silakan login untuk memulai atau hubungi administrator jika Anda belum memiliki akun.</p>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPK AHP - Rumah Sakit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+<body>
+         
+    <div class="d-flex flex-column min-vh-100">
+        <main class="flex-grow-1 d-flex align-items-center justify-content-center py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <!-- Login Card -->
+                    <div class="col-md-5 col-lg-4">
+                        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                            <div class="card-body p-4">
+                                <div class="text-center mb-4">
+                                    <h3 class="fw-bold text-primary">Login</h3>
+                                    <p class="text-muted mb-0">Masuk ke akun Anda</p>
+                                </div>
 
-    <!-- Kolom Form Login -->
-    <div class="col-md-5">
-        <div class="card">
-            <div class="card-header">Login</div>
-            <div class="card-body">
-                <?php if (isset($error)): ?>
-                    <div class="alert alert-danger"><?php echo $error; ?></div>
-                <?php endif; ?>
-                <form action="login.php" method="POST">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                                <?php if ($error): ?>
+                                    <div class="alert alert-danger alert-sm py-2"><?= htmlspecialchars($error) ?></div>
+                                <?php endif; ?>
+
+                                <form action="login.php" method="POST">
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label small fw-bold">Username</label>
+                                        <input type="text" class="form-control form-control-sm" id="username" name="username" required autofocus>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label small fw-bold">Password</label>
+                                        <input type="password" class="form-control form-control-sm" id="password" name="password" required>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary btn-sm">Login</button>
+                                    </div>
+                                </form>
+
+                                <div class="text-center mt-3">
+                                    <small>
+                                        Belum punya akun? 
+                                        <a href="register.php" class="text-decoration-none text-primary fw-medium">Daftar</a>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+
+                    <!-- Info Section (opsional, bisa dihilangkan jika ingin lebih minimal) -->
+                    <div class="col-md-5 col-lg-4 d-none d-md-block">
+                        <div class="bg-light p-4 h-100 d-flex flex-column justify-content-center rounded-4">
+                            <h5 class="fw-bold text-dark">SPK AHP Rumah Sakit</h5>
+                            <p class="text-muted small mb-3">
+                                Sistem Pendukung Keputusan menggunakan metode <strong>Analytic Hierarchy Process (AHP)</strong> untuk menentukan prioritas layanan rumah sakit.
+                            </p>
+                            <ul class="list-unstyled small text-muted">
+                                <li class="mb-1">• Analisis perbandingan berpasangan</li>
+                                <li class="mb-1">• Penentuan bobot kriteria</li>
+                                <li class="mb-1">• Rekomendasi perbaikan layanan</li>
+                            </ul>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                </form>
-                <div class="text-center mt-3">
-                    <a href="register.php" class="text-decoration-none">Belum punya akun? Daftar di sini.</a>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
-</div>
+        
+</body>
+</html>
 
 <?php include 'includes/footer.php'; ?>

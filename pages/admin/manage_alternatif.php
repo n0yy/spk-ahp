@@ -7,7 +7,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-// Handle Create and Update
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add'])) {
         $nama = $_POST['nama'];
@@ -23,23 +22,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Handle Delete
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $pdo->prepare("DELETE FROM alternatif WHERE id_alternatif = ?");
     $stmt->execute([$id]);
 }
 
-// Fetch all alternatif
 $stmt = $pdo->query("SELECT * FROM alternatif");
 $alternatif = $stmt->fetchAll();
 
 include '../../includes/header.php';
 ?>
 
-<h2>Manajemen Alternatif</h2>
+<h2>Alternatif</h2>
 
-<!-- Add/Edit Form -->
 <div class="card mb-4">
     <div class="card-header">
         <?php echo isset($_GET['edit']) ? 'Edit' : 'Tambah'; ?> Alternatif

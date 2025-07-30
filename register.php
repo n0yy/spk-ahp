@@ -7,9 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $email = $_POST['email'];
-    $role = 'staf'; // Default role
+    $role = 'staf';
 
-    // Hash the password
     $hashed_password = md5($password);
 
     try {
