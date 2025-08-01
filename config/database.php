@@ -1,13 +1,12 @@
 <?php
 $host = 'localhost';
 $dbname = 'spk_ahp_rs';
-$user = 'root';
-$pass = '';
+$username = 'root';
+$password = '';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
 } catch (PDOException $e) {
-    die("Koneksi ke database gagal: " . $e->getMessage());
+    die("Koneksi gagal: " . $e->getMessage());
 }
 ?>
